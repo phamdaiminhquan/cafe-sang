@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Star, ShoppingCart, Eye, MousePointer, Package, AlertCircle, Loader2 } from 'lucide-react';
-import { useLanguage } from '../contexts/LanguageContext';
+
 import { MenuItem, Product, Category } from '../types';
 import { getCategories, getProducts, buildImageUrl, filterActiveProducts, ApiError } from '../services/api';
 
@@ -10,7 +10,7 @@ interface MenuSectionProps {
 }
 
 export function MenuSection({ onOrderClick }: MenuSectionProps) {
-  const { language, t } = useLanguage();
+
   const [selectedCategory, setSelectedCategory] = useState<number | 'all'>('all');
   const [categories, setCategories] = useState<Category[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
@@ -64,9 +64,7 @@ export function MenuSection({ onOrderClick }: MenuSectionProps) {
     return {
       id: String(product.id),
       name: product.name,
-      nameEn: product.name, // Backend doesn't have separate English names yet
       description: product.description || '',
-      descriptionEn: product.description || '',
       price: Number(product.price), // Cast to number as per API docs
       category: product.category.name,
       image: buildImageUrl(product.image),
@@ -80,6 +78,28 @@ export function MenuSection({ onOrderClick }: MenuSectionProps) {
 
   const menuItems = products.map(convertToMenuItem);
 
+  // Staggered list animation variants
+  const gridVariants = {
+    hidden: { opacity: 0, y: 20 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        staggerChildren: 0.06,
+        delayChildren: 0.05,
+      },
+    },
+  } as const;
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 40 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
+    },
+  } as const;
+
   const handleItemClick = (item: MenuItem) => {
     // Open order modal when clicking on card
     onOrderClick(item);
@@ -87,15 +107,15 @@ export function MenuSection({ onOrderClick }: MenuSectionProps) {
 
   return (
     <section className="py-20 px-4 bg-gray-50 dark:bg-gray-900">
-      <div className="container mx-auto max-w-6xl">
+      <div className="container max-w-7xl">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           className="text-center mb-12"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
-            {t('menu.title')}
+          <h2 className="text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white mb-4">
+            Thực đơn
           </h2>
         </motion.div>
 
@@ -115,7 +135,7 @@ export function MenuSection({ onOrderClick }: MenuSectionProps) {
                 onClick={() => window.location.reload()}
                 className="text-sm text-red-600 dark:text-red-400 underline hover:no-underline mt-1"
               >
-                {language === 'vi' ? 'Thử lại' : 'Try again'}
+                Thử lại
               </button>
             </div>
           </motion.div>
@@ -135,21 +155,22 @@ export function MenuSection({ onOrderClick }: MenuSectionProps) {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setSelectedCategory('all')}
-                className={`px-3 md:px-5 py-1.5 md:py-2 rounded-full transition-all whitespace-nowrap text-sm md:text-base font-medium ${
+                aria-pressed={selectedCategory === 'all'}
+                className={`px-3 md:px-5 py-1.5 md:py-2 rounded-full transition-all whitespace-nowrap text-sm md:text-base font-medium min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${
                   selectedCategory === 'all'
                     ? 'bg-amber-600 text-white'
                     : 'text-gray-700 dark:text-gray-300 hover:bg-amber-100 dark:hover:bg-amber-900/30'
                 }`}
                 disabled={loading}
               >
-                {language === 'vi' ? 'Tất cả' : 'All'}
+                Tất cả
               </motion.button>
 
               {/* Category buttons */}
               {loading ? (
                 <div className="px-5 py-2 text-gray-500 dark:text-gray-400 flex items-center gap-2">
                   <Loader2 className="h-4 w-4 animate-spin" />
-                  <span className="text-sm">{language === 'vi' ? 'Đang tải...' : 'Loading...'}</span>
+                  <span className="text-sm">Đang tải...</span>
                 </div>
               ) : (
                 categories.map((category) => (
@@ -158,7 +179,8 @@ export function MenuSection({ onOrderClick }: MenuSectionProps) {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setSelectedCategory(category.id)}
-                    className={`px-3 md:px-5 py-1.5 md:py-2 rounded-full transition-all whitespace-nowrap text-sm md:text-base font-medium ${
+                    aria-pressed={selectedCategory === category.id}
+                    className={`px-3 md:px-5 py-1.5 md:py-2 rounded-full transition-all whitespace-nowrap text-sm md:text-base font-medium min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${
                       selectedCategory === category.id
                         ? 'bg-amber-600 text-white'
                         : 'text-gray-700 dark:text-gray-300 hover:bg-amber-100 dark:hover:bg-amber-900/30'
@@ -174,13 +196,21 @@ export function MenuSection({ onOrderClick }: MenuSectionProps) {
 
         {/* Loading State for Products */}
         {productsLoading && (
-          <div className="flex justify-center items-center py-20">
-            <div className="flex flex-col items-center gap-4">
-              <Loader2 className="h-12 w-12 text-amber-600 animate-spin" />
-              <p className="text-gray-600 dark:text-gray-400">
-                {language === 'vi' ? 'Đang tải sản phẩm...' : 'Loading products...'}
-              </p>
-            </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8 py-6">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="bg-white dark:bg-gray-800 rounded-xl md:rounded-2xl overflow-hidden shadow-soft animate-pulse">
+                <div className="w-full h-40 md:h-48 bg-gray-200/70 dark:bg-gray-700" />
+                <div className="p-4 md:p-6 space-y-3">
+                  <div className="h-5 w-3/4 bg-gray-200/70 dark:bg-gray-700 rounded" />
+                  <div className="h-4 w-full bg-gray-200/70 dark:bg-gray-700 rounded" />
+                  <div className="h-4 w-5/6 bg-gray-200/70 dark:bg-gray-700 rounded" />
+                  <div className="flex items-center justify-between pt-2">
+                    <div className="h-6 w-24 bg-gray-200/70 dark:bg-gray-700 rounded" />
+                    <div className="h-9 w-28 bg-gray-200/70 dark:bg-gray-700 rounded-lg" />
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         )}
 
@@ -190,7 +220,7 @@ export function MenuSection({ onOrderClick }: MenuSectionProps) {
             <div className="text-center">
               <Package className="h-16 w-16 text-gray-400 mx-auto mb-4" />
               <p className="text-xl text-gray-600 dark:text-gray-400">
-                {language === 'vi' ? 'Không có sản phẩm nào' : 'No products available'}
+                Không có sản phẩm nào
               </p>
             </div>
           </div>
@@ -200,20 +230,22 @@ export function MenuSection({ onOrderClick }: MenuSectionProps) {
         {!productsLoading && menuItems.length > 0 && (
           <motion.div
             layout
+            variants={gridVariants}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.2 }}
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8"
           >
-            {menuItems.map((item, index) => (
+            {menuItems.map((item) => (
             <motion.div
               key={item.id}
               layout
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
+              variants={cardVariants}
               whileHover={{ y: -5, scale: 1.02 }}
               className="group"
             >
               <div
-                className="bg-white dark:bg-gray-800 rounded-xl md:rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer"
+                className="bg-white dark:bg-gray-800 rounded-xl md:rounded-2xl overflow-hidden shadow-soft hover:shadow-hover transition-all duration-300 cursor-pointer"
                 onClick={() => handleItemClick(item)}
               >
                 {/* Image */}
@@ -222,7 +254,10 @@ export function MenuSection({ onOrderClick }: MenuSectionProps) {
                     whileHover={{ scale: 1.1 }}
                     transition={{ duration: 0.4 }}
                     src={item.image}
-                    alt={language === 'vi' ? item.name : item.nameEn}
+                    alt={item.name}
+                    loading="lazy"
+                    decoding="async"
+                    sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                     className="w-full h-40 md:h-48 object-cover"
                   />
                   <div className="absolute top-2 md:top-4 right-2 md:right-4 bg-black/20 backdrop-blur-sm rounded-full p-1.5 md:p-2">
@@ -235,11 +270,11 @@ export function MenuSection({ onOrderClick }: MenuSectionProps) {
 
                 {/* Content */}
                 <div className="p-4 md:p-6">
-                  <h3 className="text-lg md:text-xl font-bold text-gray-900 dark:text-white mb-2 line-clamp-1">
-                    {language === 'vi' ? item.name : item.nameEn}
+                  <h3 className="text-lg md:text-xl font-bold font-display text-gray-900 dark:text-white mb-2 line-clamp-1">
+                    {item.name}
                   </h3>
                   <p className="text-gray-600 dark:text-gray-400 mb-3 md:mb-4 text-sm leading-relaxed line-clamp-2">
-                    {language === 'vi' ? item.description : item.descriptionEn}
+                    {item.description}
                   </p>
 
                   {/* Analytics */}
@@ -264,7 +299,7 @@ export function MenuSection({ onOrderClick }: MenuSectionProps) {
                         {item.price.toLocaleString('vi-VN')}₫
                       </span>
                       <div className="text-xs md:text-sm text-gray-500 dark:text-gray-400">
-                        {item.reviewCount} {t('menu.reviews')}
+                        {item.reviewCount} đánh giá
                       </div>
                     </div>
 
@@ -275,10 +310,10 @@ export function MenuSection({ onOrderClick }: MenuSectionProps) {
                         e.stopPropagation();
                         onOrderClick(item);
                       }}
-                      className="flex items-center gap-1 md:gap-2 px-3 md:px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors text-sm"
+                      className="flex items-center gap-1 md:gap-2 px-3 md:px-4 py-2 rounded-lg text-sm btn-premium min-h-[44px]"
                     >
-                      <ShoppingCart className="h-4 w-4" />
-                      <span className="hidden sm:inline">{t('menu.order')}</span>
+                      <ShoppingCart className="h-4 w-4" aria-hidden={true} />
+                      <span className="hidden sm:inline">Đặt món</span>
                     </motion.button>
                   </div>
                 </div>

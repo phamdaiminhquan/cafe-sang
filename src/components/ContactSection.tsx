@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Phone, Mail, MapPin, Clock, Send } from 'lucide-react';
-import { useLanguage } from '../contexts/LanguageContext';
+
 
 export function ContactSection() {
-  const { language } = useLanguage();
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -13,54 +13,31 @@ export function ContactSection() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    alert(language === 'vi' ? 'Cảm ơn bạn đã liên hệ!' : 'Thank you for contacting us!');
+    alert('Cảm ơn bạn đã liên hệ!');
     setFormData({ name: '', email: '', message: '' });
   };
 
   const contactInfo = [
-    {
-      icon: Phone,
-      title: language === 'vi' ? 'Điện thoại' : 'Phone',
-      value: '(028) 1234 5678'
-    },
-    {
-      icon: Mail,
-      title: 'Email',
-      value: 'hello@cafesang.com'
-    },
-    {
-      icon: MapPin,
-      title: language === 'vi' ? 'Địa chỉ' : 'Address',
-      value: language === 'vi' 
-        ? '123 Đường Nguyễn Văn A, Quận 1, TP.HCM' 
-        : '123 Nguyen Van A Street, District 1, HCMC'
-    },
-    {
-      icon: Clock,
-      title: language === 'vi' ? 'Giờ mở cửa' : 'Opening Hours',
-      value: language === 'vi' 
-        ? 'T2-CN: 6:00 - 22:00' 
-        : 'Mon-Sun: 6:00 AM - 10:00 PM'
-    }
+    { icon: Phone, title: 'Điện thoại', value: '(028) 1234 5678' },
+    { icon: Mail, title: 'Email', value: 'hello@cafesang.com' },
+    { icon: MapPin, title: 'Địa chỉ', value: '123 Đường Nguyễn Văn A, Quận 1, TP.HCM' },
+    { icon: Clock, title: 'Giờ mở cửa', value: 'T2-CN: 6:00 - 22:00' }
   ];
 
   return (
-    <section className="py-12 md:py-20 px-4 bg-white dark:bg-black">
-      <div className="container mx-auto max-w-6xl">
+    <section className="section-wrap bg-white dark:bg-black">
+      <div className="section-container">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           className="text-center mb-8 md:mb-16"
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4 md:mb-6">
-            {language === 'vi' ? 'Liên hệ với chúng tôi' : 'Contact Us'}
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold font-display text-gray-900 dark:text-white mb-4 md:mb-6">
+            Liên hệ với chúng tôi
           </h2>
           <p className="text-base md:text-lg text-gray-600 dark:text-gray-400">
-            {language === 'vi' 
-              ? 'Chúng tôi luôn sẵn sàng lắng nghe ý kiến của bạn'
-              : 'We are always ready to hear from you'
-            }
+            Chúng tôi luôn sẵn sàng lắng nghe ý kiến của bạn
           </p>
         </motion.div>
 
@@ -71,8 +48,8 @@ export function ContactSection() {
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h3 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-6 md:mb-8">
-              {language === 'vi' ? 'Thông tin liên hệ' : 'Contact Information'}
+            <h3 className="text-xl md:text-2xl font-bold font-display text-gray-900 dark:text-white mb-6 md:mb-8">
+              Thông tin liên hệ
             </h3>
             
             <div className="space-y-4 md:space-y-6">
@@ -110,6 +87,9 @@ export function ContactSection() {
               <img
                 src="https://images.pexels.com/photos/1307698/pexels-photo-1307698.jpeg?auto=compress&cs=tinysrgb&w=800"
                 alt="Café location"
+                loading="lazy"
+                decoding="async"
+                sizes="(min-width: 1024px) 50vw, 100vw"
                 className="w-full h-full object-cover"
               />
             </motion.div>
@@ -121,8 +101,8 @@ export function ContactSection() {
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h3 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-6 md:mb-8">
-              {language === 'vi' ? 'Gửi tin nhắn' : 'Send Message'}
+            <h3 className="text-xl md:text-2xl font-bold font-display text-gray-900 dark:text-white mb-6 md:mb-8">
+              Gửi tin nhắn
             </h3>
             
             <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
@@ -131,7 +111,7 @@ export function ContactSection() {
                 className="transition-transform"
               >
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 md:mb-2">
-                  {language === 'vi' ? 'Họ tên' : 'Full Name'}
+                  Họ tên
                 </label>
                 <input
                   type="text"
@@ -163,7 +143,7 @@ export function ContactSection() {
                 className="transition-transform"
               >
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 md:mb-2">
-                  {language === 'vi' ? 'Tin nhắn' : 'Message'}
+                  Tin nhắn
                 </label>
                 <textarea
                   value={formData.message}
@@ -178,10 +158,10 @@ export function ContactSection() {
                 type="submit"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="w-full flex items-center justify-center gap-2 px-4 md:px-6 py-3 bg-amber-600 text-white font-semibold rounded-lg hover:bg-amber-700 transition-colors text-sm md:text-base"
+                className="w-full flex items-center justify-center gap-2 px-4 md:px-6 py-3 text-white font-semibold rounded-lg text-sm md:text-base btn-premium min-h-[44px]"
               >
                 <Send className="h-4 w-4" />
-                {language === 'vi' ? 'Gửi tin nhắn' : 'Send Message'}
+                Gửi tin nhắn
               </motion.button>
             </form>
           </motion.div>

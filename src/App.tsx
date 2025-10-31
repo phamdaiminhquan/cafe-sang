@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React, { Suspense, useState } from 'react';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
-import { MenuSection } from './components/MenuSection';
-import { AboutSection } from './components/AboutSection';
-import { RewardsSection } from './components/RewardsSection';
-import { ContactSection } from './components/ContactSection';
-import { LoginModal } from './components/LoginModal';
-import { OrderModal } from './components/OrderModal';
-import { DemoUserSwitcher } from './components/DemoUserSwitcher';
+const MenuSection = React.lazy(() => import('./components/MenuSection').then(m => ({ default: m.MenuSection })));
+const AboutSection = React.lazy(() => import('./components/AboutSection').then(m => ({ default: m.AboutSection })));
+const RewardsSection = React.lazy(() => import('./components/RewardsSection').then(m => ({ default: m.RewardsSection })));
+const ContactSection = React.lazy(() => import('./components/ContactSection').then(m => ({ default: m.ContactSection })));
+const LoginModal = React.lazy(() => import('./components/LoginModal').then(m => ({ default: m.LoginModal })));
+const OrderModal = React.lazy(() => import('./components/OrderModal').then(m => ({ default: m.OrderModal })));
+const DemoUserSwitcher = React.lazy(() => import('./components/DemoUserSwitcher').then(m => ({ default: m.DemoUserSwitcher })));
 import { ThemeProvider } from './contexts/ThemeContext';
-import { LanguageProvider } from './contexts/LanguageContext';
+
 import { AuthProvider } from './contexts/AuthContext';
 import { MenuItem } from './types';
 
@@ -45,54 +45,75 @@ function App() {
   };
 
   return (
-    <LanguageProvider>
+
       <ThemeProvider>
         <AuthProvider>
           <div className="min-h-screen bg-white dark:bg-black transition-colors overflow-x-hidden">
+            <a href="#main" className="skip-link">Bỏ qua để vào nội dung</a>
             <Header
               currentSection={currentSection}
               onSectionChange={handleSectionChange}
               onLoginClick={() => setIsLoginModalOpen(true)}
             />
 
-            <main>
+            <main id="main">
               <section id="home">
                 <Hero onExploreClick={() => handleSectionChange('menu')} />
               </section>
 
               <section id="menu">
-                <MenuSection onOrderClick={handleOrderClick} />
+                <Suspense fallback={<div className="section-wrap"><div className="section-container"><div className="h-40 bg-gray-100 dark:bg-gray-800 rounded-xl animate-pulse" /></div></div>}>
+                  <MenuSection onOrderClick={handleOrderClick} />
+                </Suspense>
               </section>
 
               <section id="about">
-                <AboutSection />
+                <Suspense fallback={<div className="section-wrap"><div className="section-container"><div className="h-32 bg-gray-100 dark:bg-gray-800 rounded-xl animate-pulse" /></div></div>}>
+                  <AboutSection />
+                </Suspense>
               </section>
 
               <section id="rewards">
-                <RewardsSection />
+                <Suspense fallback={<div className="section-wrap"><div className="section-container"><div className="h-32 bg-gray-100 dark:bg-gray-800 rounded-xl animate-pulse" /></div></div>}>
+                  <RewardsSection />
+                </Suspense>
               </section>
 
               <section id="contact">
-                <ContactSection />
+                <Suspense fallback={<div className="section-wrap"><div className="section-container"><div className="h-40 bg-gray-100 dark:bg-gray-800 rounded-xl animate-pulse" /></div></div>}>
+                  <ContactSection />
+                </Suspense>
               </section>
             </main>
 
-            <LoginModal
-              isOpen={isLoginModalOpen}
-              onClose={() => setIsLoginModalOpen(false)}
-            />
+            <Suspense fallback={null}>
+              <LoginModal
+                isOpen={isLoginModalOpen}
+                onClose={() => setIsLoginModalOpen(false)}
+              />
+            </Suspense>
 
-            <OrderModal
-              isOpen={isOrderModalOpen}
-              onClose={() => setIsOrderModalOpen(false)}
-              item={selectedMenuItem}
-            />
+            <Suspense fallback={
+              <div className="fixed inset-0 z-50 grid place-items-center bg-black/40 backdrop-blur-sm">
+                <div className="px-4 py-3 rounded-lg bg-white dark:bg-gray-800 shadow-lg text-gray-700 dark:text-gray-200 text-sm">
+                  Đang mở hộp thoại đặt món...
+                </div>
+              </div>
+            }>
+              <OrderModal
+                isOpen={isOrderModalOpen}
+                onClose={() => setIsOrderModalOpen(false)}
+                item={selectedMenuItem}
+              />
+            </Suspense>
 
-            <DemoUserSwitcher />
+            <Suspense fallback={null}>
+              <DemoUserSwitcher />
+            </Suspense>
           </div>
         </AuthProvider>
       </ThemeProvider>
-    </LanguageProvider>
+
   );
 }
 

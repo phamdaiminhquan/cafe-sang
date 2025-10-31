@@ -1,14 +1,16 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
-import { useLanguage } from '../contexts/LanguageContext';
+
 
 interface HeroProps {
   onExploreClick: () => void;
 }
 
 export function Hero({ onExploreClick }: HeroProps) {
-  const { t } = useLanguage();
+
+  // Subtle parallax based on scroll
+  const { scrollYProgress } = useScroll();
+  const y = useTransform(scrollYProgress, [0, 1], [0, 80]);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
@@ -17,7 +19,8 @@ export function Hero({ onExploreClick }: HeroProps) {
         initial={{ scale: 1.1 }}
         animate={{ scale: 1 }}
         transition={{ duration: 2 }}
-        className="absolute inset-0 z-0"
+        style={{ y }}
+        className="absolute inset-0 z-0 will-change-transform"
       >
         <div
           className="w-full h-full bg-cover bg-center bg-fixed"
@@ -25,6 +28,7 @@ export function Hero({ onExploreClick }: HeroProps) {
             backgroundImage: 'url(https://images.pexels.com/photos/1695052/pexels-photo-1695052.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop)'
           }}
         />
+        {/* Base dark overlay */}
         <div className="absolute inset-0 bg-black/60 dark:bg-black/80" />
       </motion.div>
 
@@ -34,9 +38,18 @@ export function Hero({ onExploreClick }: HeroProps) {
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.2 }}
-          className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-4 md:mb-6"
+          className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold font-display text-white mb-4 md:mb-6 tracking-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)]"
         >
-          {t('hero.title')}
+          Chào mừng đến với
+        </motion.h1>
+
+        <motion.h1
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.2 }}
+          className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold font-display text-white mb-4 md:mb-6 tracking-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)]"
+        >
+          AB Coffee
         </motion.h1>
 
         <motion.p
@@ -45,7 +58,7 @@ export function Hero({ onExploreClick }: HeroProps) {
           transition={{ duration: 1, delay: 0.4 }}
           className="text-lg md:text-xl lg:text-2xl text-gray-200 mb-6 md:mb-8 max-w-2xl mx-auto leading-relaxed"
         >
-          {t('hero.subtitle')}
+          Thưởng thức hương vị cà phê đậm đà tại AB Coffee
         </motion.p>
 
         <motion.button
@@ -55,9 +68,13 @@ export function Hero({ onExploreClick }: HeroProps) {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={onExploreClick}
-          className="inline-flex items-center gap-2 px-6 md:px-8 py-3 md:py-4 bg-amber-600 text-white text-base md:text-lg font-semibold rounded-full hover:bg-amber-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+          className="group relative inline-flex items-center gap-2 px-6 md:px-8 py-3 md:py-4 text-white text-base md:text-lg font-semibold rounded-full transition-all duration-300 shadow-soft hover:shadow-hover bg-amber-600 hover:bg-amber-700 min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
         >
-          {t('hero.cta')}
+          Khám phá thực đơn
+          {/* Shine effect */}
+          <span className="pointer-events-none absolute inset-0 overflow-hidden rounded-full">
+            <span className="absolute -left-1/3 top-0 h-full w-1/3 bg-white/20 transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity duration-150" />
+          </span>
         </motion.button>
       </div>
 

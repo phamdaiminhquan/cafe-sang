@@ -1,7 +1,7 @@
 import React from 'react';
 import { Shield, User, Crown } from 'lucide-react';
 import { User as UserType } from '../types';
-import { useLanguage } from '../contexts/LanguageContext';
+
 
 interface UserRoleIndicatorProps {
   user: UserType;
@@ -9,7 +9,7 @@ interface UserRoleIndicatorProps {
 }
 
 export function UserRoleIndicator({ user, compact = false }: UserRoleIndicatorProps) {
-  const { language } = useLanguage();
+
 
   const getRoleConfig = (role: string) => {
     switch (role) {
@@ -17,7 +17,7 @@ export function UserRoleIndicator({ user, compact = false }: UserRoleIndicatorPr
         return {
           icon: Crown,
           color: 'bg-purple-500 text-white',
-          label: language === 'vi' ? 'Quản lý' : 'Admin',
+          label: 'Quản lý',
           bgColor: 'bg-purple-100 dark:bg-purple-900/30',
           textColor: 'text-purple-800 dark:text-purple-200'
         };
@@ -25,7 +25,7 @@ export function UserRoleIndicator({ user, compact = false }: UserRoleIndicatorPr
         return {
           icon: Shield,
           color: 'bg-green-500 text-white',
-          label: language === 'vi' ? 'Nhân viên' : 'Staff',
+          label: 'Nhân viên',
           bgColor: 'bg-green-100 dark:bg-green-900/30',
           textColor: 'text-green-800 dark:text-green-200'
         };
@@ -33,7 +33,7 @@ export function UserRoleIndicator({ user, compact = false }: UserRoleIndicatorPr
         return {
           icon: User,
           color: 'bg-blue-500 text-white',
-          label: language === 'vi' ? 'Khách hàng' : 'Customer',
+          label: 'Khách hàng',
           bgColor: 'bg-blue-100 dark:bg-blue-900/30',
           textColor: 'text-blue-800 dark:text-blue-200'
         };

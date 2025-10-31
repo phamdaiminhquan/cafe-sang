@@ -1,0 +1,134 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "lastUpdated": "2025-10-31T13:45:30Z",
+    "projectStatus": "active"
+  },
+  "overview": {
+    "name": "AB Coffee",
+    "description": "Website quán cà phê hiện đại, giao diện tiếng Việt, tích hợp API backend cho danh mục và sản phẩm."
+  },
+  "techStack": [
+    "React 18",
+    "TypeScript",
+    "Vite",
+    "Tailwind CSS",
+    "Framer Motion",
+    "Axios",
+    "Lucide React"
+  ],
+  "directoryStructure": [
+    "src/components",
+    "src/contexts",
+    "src/services",
+    "src/types",
+    "src/data"
+  ],
+  "architecture": {
+    "stateManagement": {
+      "contexts": ["ThemeContext", "AuthContext"],
+      "removed": ["LanguageContext"]
+    },
+    "components": "Functional components với hooks",
+    "routing": "Không sử dụng router; chuyển section bằng state tại App.tsx",
+    "styling": "Tailwind CSS + dark mode (class)"
+  },
+  "apiIntegration": {
+    "baseUrl": "http://localhost:3000",
+    "envVar": "VITE_BACKEND_URL (fallback sang http://localhost:3000 khi không có env)",
+    "endpoints": [
+      { "method": "GET", "path": "/categories", "usedBy": ["MenuSection"] },
+      { "method": "GET", "path": "/products", "query": ["categoryId"], "usedBy": ["MenuSection"] },
+      { "method": "GET", "path": "/products/:id", "usedBy": ["Sẵn sàng cho trang chi tiết sản phẩm"] }
+    ],
+    "errorHandling": {
+      "type": "ApiError",
+      "shape": { "status": "number", "message": "string", "originalError": "unknown" },
+      "pattern": "try/catch tại component, hiển thị thông báo lỗi thân thiện"
+    }
+  },
+  "serviceLayer": {
+    "path": "src/services/api.ts",
+    "functions": [
+      "getCategories",
+      "getCategoryById",
+      "getProducts",
+      "getProductById",
+      "buildImageUrl",
+      "filterActiveProducts"
+    ],
+    "axios": {
+      "baseURL": "baseUrl từ env hoặc http://localhost:3000",
+      "timeoutMs": 10000,
+      "headers": { "Content-Type": "application/json" }
+    }
+  },
+  "types": {
+    "path": "src/types/index.ts",
+    "backend": ["Category", "Product"],
+    "legacyCompatibility": ["MenuItem"],
+    "other": ["User", "Order", "OrderItem", "Reward"]
+  },
+  "designDecisions": [
+    "Giao diện chỉ tiếng Việt; đã gỡ bỏ LanguageContext và t()",
+    "Dark/Light mode quản lý qua ThemeContext",
+    "Authentication demo với 3 vai trò: customer, staff, admin (AuthContext)",
+    "Chỉ hiển thị sản phẩm status === 'active' (filterActiveProducts)",
+    "Ảnh sản phẩm dùng đường dẫn tương đối; buildImageUrl() ghép baseUrl",
+    "Không dùng router; điều hướng trong trang bằng state App.tsx"
+  ],
+  "components": [
+    "Header",
+    "Hero",
+    "MenuSection",
+    "AboutSection",
+    "RewardsSection",
+    "ContactSection",
+    "LoginModal",
+    "OrderModal",
+    "DemoUserSwitcher",
+    "UserRoleIndicator"
+  ],
+  "currentStatus": {
+    "apiIntegration": "Hoàn thành cho categories và products",
+    "languageLayer": "Đã loại bỏ, chỉ còn tiếng Việt",
+    "build": "Thành công (npm run build)",
+    "tests": "Chưa có test suite",
+    "notes": [
+      "Đã thêm loading/error states và kiểm soát lỗi API",
+      "Đã refactor text sang tiếng Việt cố định",
+      "RewardsSection hiện đang dùng rewards từ src/data/mockData.ts"
+    ]
+  },
+  "updateRules": [
+    "Cập nhật 'currentStatus' sau mỗi task hoàn thành",
+    "Bổ sung 'designDecisions' khi thay đổi kiến trúc hoặc convention quan trọng",
+    "Cập nhật 'components' khi thêm/xóa component đáng chú ý",
+    "Ghi lại breaking changes/refactor lớn trong 'currentStatus.notes'",
+    "Cập nhật 'metadata.lastUpdated' theo ISO 8601 (UTC)"
+  ],
+  "conventions": [
+    "Component: PascalCase, file .tsx trong src/components",
+    "Context: đặt trong src/contexts, export Provider và hook useXxx",
+    "Service/API: src/services/api.ts là nguồn duy nhất gọi REST",
+    "Kiểu dữ liệu: định nghĩa tại src/types/index.ts",
+    "Styling: Tailwind CSS utility-first; dark mode class ở html"
+  ],
+  "gotchas": [
+    "Đảm bảo filterActiveProducts trước khi render danh sách sản phẩm",
+    "buildImageUrl bỏ qua URL đã đầy đủ (http/https)",
+    "baseUrl lấy từ VITE_BACKEND_URL, fallback http://localhost:3000",
+    "Điều hướng section nằm ở App.tsx (không dùng router)"
+  ],
+  "moduleDependencies": [
+    { "from": "MenuSection", "to": ["src/services/api.ts", "src/types/index.ts"] },
+    { "from": "Header", "to": ["ThemeContext", "AuthContext"] },
+    { "from": "RewardsSection", "to": ["AuthContext", "src/data/mockData.ts"] },
+    { "from": "OrderModal", "to": ["AuthContext"] },
+    { "from": "DemoUserSwitcher", "to": ["AuthContext"] }
+  ],
+  "breakingChanges": [
+    { "date": "2025-10-31", "summary": "Gỡ bỏ hoàn toàn LanguageContext và t(); chuyển toàn bộ text sang tiếng Việt." }
+  ]
+}
+

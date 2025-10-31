@@ -2,33 +2,33 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Users, ChevronDown, Crown, Shield, User } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
-import { useLanguage } from '../contexts/LanguageContext';
+
 
 export function DemoUserSwitcher() {
   const { user, switchUser } = useAuth();
-  const { language } = useLanguage();
+
   const [isOpen, setIsOpen] = useState(false);
 
   const userTypes = [
     {
       type: 'customer' as const,
       icon: User,
-      label: language === 'vi' ? 'Khách hàng' : 'Customer',
-      description: language === 'vi' ? 'Nguyễn Văn An - 150 điểm' : 'Nguyen Van An - 150 points',
+      label: 'Khách hàng',
+      description: 'Nguyễn Văn An - 150 điểm',
       color: 'text-blue-600 dark:text-blue-400'
     },
     {
       type: 'staff' as const,
       icon: Shield,
-      label: language === 'vi' ? 'Nhân viên' : 'Staff',
-      description: language === 'vi' ? 'Trần Thị Bình - 50 điểm' : 'Tran Thi Binh - 50 points',
+      label: 'Nhân viên',
+      description: 'Trần Thị Bình - 50 điểm',
       color: 'text-green-600 dark:text-green-400'
     },
     {
       type: 'admin' as const,
       icon: Crown,
-      label: language === 'vi' ? 'Quản lý' : 'Admin',
-      description: language === 'vi' ? 'Lê Văn Cường - 500 điểm' : 'Le Van Cuong - 500 points',
+      label: 'Quản lý',
+      description: 'Lê Văn Cường - 500 điểm',
       color: 'text-purple-600 dark:text-purple-400'
     }
   ];
@@ -53,7 +53,7 @@ export function DemoUserSwitcher() {
         >
           <Users className="h-4 w-4 text-gray-600 dark:text-gray-400" />
           <span className="text-sm font-medium text-gray-700 dark:text-gray-300 hidden sm:inline">
-            {language === 'vi' ? 'Chuyển người dùng' : 'Switch User'}
+            Chuyển người dùng
           </span>
           <ChevronDown className={`h-4 w-4 text-gray-600 dark:text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
         </motion.button>
@@ -68,7 +68,7 @@ export function DemoUserSwitcher() {
             >
               <div className="p-3 border-b border-gray-200 dark:border-gray-700">
                 <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
-                  {language === 'vi' ? 'Chọn vai trò demo' : 'Select Demo Role'}
+                  Chọn vai trò demo
                 </h3>
               </div>
               

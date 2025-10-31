@@ -31,9 +31,7 @@ export interface Product {
 export interface MenuItem {
   id: string;
   name: string;
-  nameEn: string;
   description: string;
-  descriptionEn: string;
   price: number;
   category: string;
   image: string;
@@ -74,9 +72,7 @@ export interface Review {
 export interface Reward {
   id: string;
   name: string;
-  nameEn: string;
   description: string;
-  descriptionEn: string;
   pointsRequired: number;
   image: string;
   available: boolean;
