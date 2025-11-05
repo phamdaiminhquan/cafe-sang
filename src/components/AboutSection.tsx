@@ -4,7 +4,6 @@ import { Coffee, Heart, Users, Award } from 'lucide-react';
 
 export function AboutSection() {
 
-
   const features = [
     {
       icon: Coffee,

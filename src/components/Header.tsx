@@ -3,19 +3,19 @@ import { motion, useScroll, useSpring } from 'framer-motion';
 import { Coffee, Sun, Moon, User, LogOut, Menu, X } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 
-import { useAuth } from '../contexts/AuthContext';
-import { UserRoleIndicator } from './UserRoleIndicator';
+// import { useAuth } from '../contexts/AuthContext';
+// import { UserRoleIndicator } from './UserRoleIndicator';
 
 interface HeaderProps {
   currentSection: string;
   onSectionChange: (section: string) => void;
-  onLoginClick: () => void;
+  // onLoginClick: () => void;
 }
 
-export function Header({ currentSection, onSectionChange, onLoginClick }: HeaderProps) {
+export function Header({ currentSection, onSectionChange }: HeaderProps) {
   const { isDark, toggleTheme } = useTheme();
 
-  const { user, logout } = useAuth();
+  // const { user, logout } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
 
@@ -34,8 +34,7 @@ export function Header({ currentSection, onSectionChange, onLoginClick }: Header
     { id: 'home', label: 'Trang chủ' },
     { id: 'menu', label: 'Thực đơn' },
     { id: 'about', label: 'Về chúng tôi' },
-    { id: 'contact', label: 'Liên hệ' },
-    { id: 'rewards', label: 'Đổi thưởng' }
+    { id: 'contact', label: 'Liên hệ' }
   ];
 
   return (
@@ -57,8 +56,7 @@ export function Header({ currentSection, onSectionChange, onLoginClick }: Header
             className="flex items-center gap-2 cursor-pointer"
             onClick={() => onSectionChange('home')}
           >
-            <Coffee className="h-8 w-8 text-amber-600" />
-            <span className="text-xl font-bold font-display text-gray-900 dark:text-white">
+            <span className="text-2xl font-bold font-display text-gray-900 dark:text-white">
               AB Coffee
             </span>
           </motion.div>
@@ -85,7 +83,7 @@ export function Header({ currentSection, onSectionChange, onLoginClick }: Header
 
           {/* Desktop Controls */}
           <div className="hidden md:flex items-center gap-3">
-            {user && (
+            {/* {user && (
               <div className="flex items-center gap-3 stable-layout user-info-stable">
                 <UserRoleIndicator user={user} />
                 <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 dark:bg-amber-900/30 stable-layout min-w-[8rem]">
@@ -99,7 +97,7 @@ export function Header({ currentSection, onSectionChange, onLoginClick }: Header
                   )}
                 </div>
               </div>
-            )}
+            )} */}
 
 
 
@@ -117,7 +115,7 @@ export function Header({ currentSection, onSectionChange, onLoginClick }: Header
               )}
             </motion.button>
 
-            {user ? (
+            {/* {user ? (
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -140,12 +138,12 @@ export function Header({ currentSection, onSectionChange, onLoginClick }: Header
                 <User className="h-4 w-4" />
                 <span className="hidden lg:inline">Đăng nhập</span>
               </motion.button>
-            )}
+            )} */}
           </div>
 
           {/* Mobile Controls */}
           <div className="flex md:hidden items-center gap-2">
-            {user && (
+            {/* {user && (
               <div className="flex items-center gap-1 user-info-stable">
                 <UserRoleIndicator user={user} compact />
                 <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-amber-100 dark:bg-amber-900/30 min-w-[4rem] stable-layout">
@@ -157,7 +155,7 @@ export function Header({ currentSection, onSectionChange, onLoginClick }: Header
                   )}
                 </div>
               </div>
-            )}
+            )} */}
 
             <motion.button
               whileHover={{ scale: 1.1 }}
@@ -238,7 +236,7 @@ export function Header({ currentSection, onSectionChange, onLoginClick }: Header
                   <Moon className="h-4 w-4 text-gray-700" />
                 )}
               </button>
-              {user ? (
+              {/* {user ? (
                 <button
                   onClick={() => {
                     logout();
@@ -260,7 +258,7 @@ export function Header({ currentSection, onSectionChange, onLoginClick }: Header
                   <User className="h-4 w-4" />
                   Đăng nhập
                 </button>
-              )}
+              )} */}
             </div>
           </motion.aside>
         </div>

@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Plus, Minus, ShoppingCart, User, Lock } from 'lucide-react';
 import { MenuItem } from '../types';
 
-import { useAuth } from '../contexts/AuthContext';
+// import { useAuth } from '../contexts/AuthContext';
 
 interface OrderModalProps {
   isOpen: boolean;
@@ -13,7 +13,7 @@ interface OrderModalProps {
 
 export function OrderModal({ isOpen, onClose, item }: OrderModalProps) {
 
-  const { user, login } = useAuth();
+  // const { user, login } = useAuth();
   const [quantity, setQuantity] = useState(1);
   const [notes, setNotes] = useState('');
   const [showGuestForm, setShowGuestForm] = useState(false);
@@ -30,34 +30,34 @@ export function OrderModal({ isOpen, onClose, item }: OrderModalProps) {
 
   // Do NOT early-return before hooks to avoid changing hooks order across renders
   const total = item ? item.price * quantity : 0;
-  const pointsToEarn = item ? Math.floor(total / 1000) : 0; // 1 point per 1000 VND
+  // const pointsToEarn = item ? Math.floor(total / 1000) : 0; // 1 point per 1000 VND
 
-  const validateGuestForm = () => {
-    const newErrors: Record<string, string> = {};
+  // const validateGuestForm = () => {
+  //   const newErrors: Record<string, string> = {};
     
-    if (!guestInfo.name.trim()) {
-      newErrors.name = 'Vui lòng nhập họ tên';
-    }
+  //   if (!guestInfo.name.trim()) {
+  //     newErrors.name = 'Vui lòng nhập họ tên';
+  //   }
     
-    if (!guestInfo.phone.trim()) {
-      newErrors.phone = 'Vui lòng nhập số điện thoại';
-    } else if (!/^[0-9]{10,11}$/.test(guestInfo.phone.replace(/\s/g, ''))) {
-      newErrors.phone = 'Số điện thoại không hợp lệ';
-    }
+  //   if (!guestInfo.phone.trim()) {
+  //     newErrors.phone = 'Vui lòng nhập số điện thoại';
+  //   } else if (!/^[0-9]{10,11}$/.test(guestInfo.phone.replace(/\s/g, ''))) {
+  //     newErrors.phone = 'Số điện thoại không hợp lệ';
+  //   }
     
-    if (!guestInfo.email.trim()) {
-      newErrors.email = 'Vui lòng nhập email';
-    } else if (!/\S+@\S+\.\S+/.test(guestInfo.email)) {
-      newErrors.email = 'Email không hợp lệ';
-    }
+  //   if (!guestInfo.email.trim()) {
+  //     newErrors.email = 'Vui lòng nhập email';
+  //   } else if (!/\S+@\S+\.\S+/.test(guestInfo.email)) {
+  //     newErrors.email = 'Email không hợp lệ';
+  //   }
     
-    if (!guestInfo.password.trim()) {
-      newErrors.password = 'Vui lòng nhập mật khẩu';
-    }
+  //   if (!guestInfo.password.trim()) {
+  //     newErrors.password = 'Vui lòng nhập mật khẩu';
+  //   }
     
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+  //   setErrors(newErrors);
+  //   return Object.keys(newErrors).length === 0;
+  // };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -65,29 +65,29 @@ export function OrderModal({ isOpen, onClose, item }: OrderModalProps) {
     
     try {
       // If user is not logged in, show guest form
-      if (!user && !showGuestForm) {
-        setShowGuestForm(true);
-        setIsSubmitting(false);
-        return;
-      }
+      // if (!user && !showGuestForm) {
+      //   setShowGuestForm(true);
+      //   setIsSubmitting(false);
+      //   return;
+      // }
       
       // If guest form is shown, validate and try to register/login
-      if (!user && showGuestForm) {
-        if (!validateGuestForm()) {
-          setIsSubmitting(false);
-          return;
-        }
+      // if (!user && showGuestForm) {
+      //   if (!validateGuestForm()) {
+      //     setIsSubmitting(false);
+      //     return;
+      //   }
         
-        // Try to login first
-        const loginSuccess = await login(guestInfo.email, guestInfo.password);
+      //   // Try to login first
+      //   const loginSuccess = await login(guestInfo.email, guestInfo.password);
         
-        if (!loginSuccess) {
-          // If login fails, this would be registration in a real app
-          alert('Đăng ký thành công! Vui lòng đăng nhập để tiếp tục.');
-          setIsSubmitting(false);
-          return;
-        }
-      }
+      //   if (!loginSuccess) {
+      //     // If login fails, this would be registration in a real app
+      //     alert('Đăng ký thành công! Vui lòng đăng nhập để tiếp tục.');
+      //     setIsSubmitting(false);
+      //     return;
+      //   }
+      // }
       
       // Mock order submission
       if (!item) {
@@ -105,18 +105,18 @@ export function OrderModal({ isOpen, onClose, item }: OrderModalProps) {
     }
   };
 
-  const handleGuestLogin = () => {
-    setShowGuestForm(false);
-    setErrors({});
+  // const handleGuestLogin = () => {
+  //   setShowGuestForm(false);
+  //   setErrors({});
     
-    // Close modal and open login modal
-    onClose();
-    // This would trigger the main login modal
-    setTimeout(() => {
-      // Trigger login modal from parent component
-      window.dispatchEvent(new CustomEvent('openLoginModal'));
-    }, 100);
-  };
+  //   // Close modal and open login modal
+  //   onClose();
+  //   // This would trigger the main login modal
+  //   setTimeout(() => {
+  //     // Trigger login modal from parent component
+  //     window.dispatchEvent(new CustomEvent('openLoginModal'));
+  //   }, 100);
+  // };
 
   const resetModal = () => {
     setShowGuestForm(false);
@@ -278,7 +278,7 @@ export function OrderModal({ isOpen, onClose, item }: OrderModalProps) {
                 </div>
 
                 {/* Guest Information Form */}
-                <AnimatePresence>
+                {/* <AnimatePresence>
                   {!user && showGuestForm && (
                     <motion.div
                       initial={{ opacity: 0, height: 0 }}
@@ -397,7 +397,7 @@ export function OrderModal({ isOpen, onClose, item }: OrderModalProps) {
                       </div>
                     </motion.div>
                   )}
-                </AnimatePresence>
+                </AnimatePresence> */}
 
                 {/* Total */}
                 <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 space-y-2">
@@ -409,7 +409,7 @@ export function OrderModal({ isOpen, onClose, item }: OrderModalProps) {
                       {total.toLocaleString('vi-VN')}₫
                     </span>
                   </div>
-                  {(user || showGuestForm) && (
+                  {/* {(user || showGuestForm) && (
                     <div className="flex justify-between items-center text-sm">
                       <span className="text-amber-600">
                         Điểm tích lũy:
@@ -418,7 +418,7 @@ export function OrderModal({ isOpen, onClose, item }: OrderModalProps) {
                         +{pointsToEarn}
                       </span>
                     </div>
-                  )}
+                  )} */}
                   <div className="border-t border-gray-300 dark:border-gray-600 pt-2">
                     <div className="flex justify-between items-center font-bold text-lg">
                       <span className="text-gray-900 dark:text-white">Tổng cộng:</span>
@@ -426,12 +426,6 @@ export function OrderModal({ isOpen, onClose, item }: OrderModalProps) {
                     </div>
                   </div>
                 </div>
-
-                {user?.isInStore && (
-                  <div className="text-center text-sm text-green-600 bg-green-50 dark:bg-green-900/20 p-2 rounded-lg">
-                    🎉 Bạn đang ở tiệm - Sẽ được phục vụ trực tiếp!
-                  </div>
-                )}
 
                 <motion.button
                   type="submit"
@@ -446,7 +440,7 @@ export function OrderModal({ isOpen, onClose, item }: OrderModalProps) {
                   }`}
                 >
                   <ShoppingCart className="h-4 w-4" aria-hidden={true} />
-                  {isSubmitting ? 'Đang xử lý...' : (!user && !showGuestForm) ? 'Tiếp tục đặt món' : 'Đặt hàng'}
+                  {/* {isSubmitting ? 'Đang xử lý...' : (!user && !showGuestForm) ? 'Tiếp tục đặt món' : 'Đặt hàng'} */}
                 </motion.button>
               </form>
             </div>

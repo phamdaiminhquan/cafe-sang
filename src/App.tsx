@@ -3,31 +3,31 @@ import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 const MenuSection = React.lazy(() => import('./components/MenuSection').then(m => ({ default: m.MenuSection })));
 const AboutSection = React.lazy(() => import('./components/AboutSection').then(m => ({ default: m.AboutSection })));
-const RewardsSection = React.lazy(() => import('./components/RewardsSection').then(m => ({ default: m.RewardsSection })));
+// const RewardsSection = React.lazy(() => import('./components/RewardsSection').then(m => ({ default: m.RewardsSection })));
 const ContactSection = React.lazy(() => import('./components/ContactSection').then(m => ({ default: m.ContactSection })));
-const LoginModal = React.lazy(() => import('./components/LoginModal').then(m => ({ default: m.LoginModal })));
+// const LoginModal = React.lazy(() => import('./components/LoginModal').then(m => ({ default: m.LoginModal })));
 const OrderModal = React.lazy(() => import('./components/OrderModal').then(m => ({ default: m.OrderModal })));
-const DemoUserSwitcher = React.lazy(() => import('./components/DemoUserSwitcher').then(m => ({ default: m.DemoUserSwitcher })));
+// const DemoUserSwitcher = React.lazy(() => import('./components/DemoUserSwitcher').then(m => ({ default: m.DemoUserSwitcher })));
 import { ThemeProvider } from './contexts/ThemeContext';
 
-import { AuthProvider } from './contexts/AuthContext';
+// import { AuthProvider } from './contexts/AuthContext';
 import { MenuItem } from './types';
 
 function App() {
   const [currentSection, setCurrentSection] = useState('home');
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  // const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
   const [selectedMenuItem, setSelectedMenuItem] = useState<MenuItem | null>(null);
 
   // Listen for custom events to open login modal
-  React.useEffect(() => {
-    const handleOpenLoginModal = () => {
-      setIsLoginModalOpen(true);
-    };
+  // React.useEffect(() => {
+  //   const handleOpenLoginModal = () => {
+  //     setIsLoginModalOpen(true);
+  //   };
 
-    window.addEventListener('openLoginModal', handleOpenLoginModal);
-    return () => window.removeEventListener('openLoginModal', handleOpenLoginModal);
-  }, []);
+  //   window.addEventListener('openLoginModal', handleOpenLoginModal);
+  //   return () => window.removeEventListener('openLoginModal', handleOpenLoginModal);
+  // }, []);
 
   const handleSectionChange = (section: string) => {
     setCurrentSection(section);
@@ -47,13 +47,13 @@ function App() {
   return (
 
       <ThemeProvider>
-        <AuthProvider>
+        {/* <AuthProvider> */}
           <div className="min-h-screen bg-white dark:bg-black transition-colors overflow-x-hidden">
-            <a href="#main" className="skip-link">Bỏ qua để vào nội dung</a>
+            {/* <a href="#main" className="skip-link">Bỏ qua để vào nội dung</a> */}
             <Header
               currentSection={currentSection}
               onSectionChange={handleSectionChange}
-              onLoginClick={() => setIsLoginModalOpen(true)}
+              // onLoginClick={() => setIsLoginModalOpen(true)}
             />
 
             <main id="main">
@@ -73,11 +73,11 @@ function App() {
                 </Suspense>
               </section>
 
-              <section id="rewards">
+              {/* <section id="rewards">
                 <Suspense fallback={<div className="section-wrap"><div className="section-container"><div className="h-32 bg-gray-100 dark:bg-gray-800 rounded-xl animate-pulse" /></div></div>}>
                   <RewardsSection />
                 </Suspense>
-              </section>
+              </section> */}
 
               <section id="contact">
                 <Suspense fallback={<div className="section-wrap"><div className="section-container"><div className="h-40 bg-gray-100 dark:bg-gray-800 rounded-xl animate-pulse" /></div></div>}>
@@ -86,12 +86,12 @@ function App() {
               </section>
             </main>
 
-            <Suspense fallback={null}>
+            {/* <Suspense fallback={null}>
               <LoginModal
                 isOpen={isLoginModalOpen}
                 onClose={() => setIsLoginModalOpen(false)}
               />
-            </Suspense>
+            </Suspense> */}
 
             <Suspense fallback={
               <div className="fixed inset-0 z-50 grid place-items-center bg-black/40 backdrop-blur-sm">
@@ -107,11 +107,11 @@ function App() {
               />
             </Suspense>
 
-            <Suspense fallback={null}>
+            {/* <Suspense fallback={null}>
               <DemoUserSwitcher />
-            </Suspense>
+            </Suspense> */}
           </div>
-        </AuthProvider>
+        {/* </AuthProvider> */}
       </ThemeProvider>
 
   );
