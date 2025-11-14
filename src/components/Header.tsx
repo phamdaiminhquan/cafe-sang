@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, useScroll, useSpring } from 'framer-motion';
-import { Coffee, Sun, Moon, User, LogOut, Menu, X } from 'lucide-react';
+import { Sun, Moon, Menu, X } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 
 // import { useAuth } from '../contexts/AuthContext';
@@ -34,6 +34,8 @@ export function Header({ currentSection, onSectionChange }: HeaderProps) {
     { id: 'home', label: 'Trang chủ' },
     { id: 'menu', label: 'Thực đơn' },
     { id: 'about', label: 'Về chúng tôi' },
+    { id: 'videos', label: 'Video hài' },
+    { id: 'reviews', label: 'Đánh giá' },
     { id: 'contact', label: 'Liên hệ' }
   ];
 

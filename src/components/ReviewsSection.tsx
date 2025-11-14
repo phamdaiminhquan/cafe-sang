@@ -155,7 +155,7 @@ export function ReviewsSection() {
 
   return (
     <>
-      <section className="section-wrap bg-gray-50 dark:bg-gray-950">
+      <section id="reviews" className="section-wrap bg-gray-50 dark:bg-gray-950">
         <div className="section-container">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
