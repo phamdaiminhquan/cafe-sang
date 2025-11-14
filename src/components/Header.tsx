@@ -35,6 +35,7 @@ export function Header({ currentSection, onSectionChange }: HeaderProps) {
     { id: 'menu', label: 'Thực đơn' },
     { id: 'about', label: 'Về chúng tôi' },
     { id: 'videos', label: 'Video hài' },
+    { id: 'tiktok', label: 'TikTok vui' },
     { id: 'reviews', label: 'Đánh giá' },
     { id: 'contact', label: 'Liên hệ' }
   ];

@@ -15,9 +15,9 @@ interface VideoItem {
 }
 
 const DEFAULT_VIDEO_URLS: string[] = [
-  'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-  'https://www.youtube.com/watch?v=9bZkp7q19f0',
-  'https://www.youtube.com/watch?v=jNQXAC9IVRw',
+  'https://www.youtube.com/shorts/j6KUpZPZWoU',
+  'https://www.youtube.com/shorts/OUv67x29MN0',
+  'https://www.youtube.com/shorts/FAMd4x2AsWQ',
 ];
 
 const containerVariants = {
@@ -221,7 +221,7 @@ export function VideoSection({ videoUrls }: VideoSectionProps) {
             Video Giải Trí
           </h2>
           <p className="mt-4 text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed">
-            Ủng hộ những video giải trí của chúng tôi qua YouTube, hy vọng rằng bạn sẽ thích chúng.
+            Ủng hộ những clip giải trí, vui vẻ của mình nhé, hy vọng rằng bạn sẽ thích chúng.
           </p>
         </div>
 

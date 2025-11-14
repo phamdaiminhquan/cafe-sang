@@ -4,6 +4,7 @@ import { Hero } from './components/Hero';
 const MenuSection = React.lazy(() => import('./components/MenuSection').then(m => ({ default: m.MenuSection })));
 const AboutSection = React.lazy(() => import('./components/AboutSection').then(m => ({ default: m.AboutSection })));
 const VideoSection = React.lazy(() => import('./components/VideoSection').then(m => ({ default: m.VideoSection })));
+const TikTokSection = React.lazy(() => import('./components/TikTokSection').then(m => ({ default: m.TikTokSection })));
 // const RewardsSection = React.lazy(() => import('./components/RewardsSection').then(m => ({ default: m.RewardsSection })));
 const ReviewsSection = React.lazy(() => import('./components/ReviewsSection').then(m => ({ default: m.ReviewsSection })));
 const ContactSection = React.lazy(() => import('./components/ContactSection').then(m => ({ default: m.ContactSection })));
@@ -78,6 +79,12 @@ function App() {
               <section id="videos">
                 <Suspense fallback={<div className="section-wrap"><div className="section-container"><div className="h-40 bg-gray-100 dark:bg-gray-800 rounded-xl animate-pulse" /></div></div>}>
                   <VideoSection />
+                </Suspense>
+              </section>
+
+              <section id="tiktok">
+                <Suspense fallback={<div className="section-wrap"><div className="section-container"><div className="h-40 bg-gray-100 dark:bg-gray-800 rounded-xl animate-pulse" /></div></div>}>
+                  <TikTokSection />
                 </Suspense>
               </section>
 
